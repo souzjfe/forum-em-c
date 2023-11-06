@@ -5,7 +5,6 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
-// Estrutura para representar uma mensagem no fórum
 struct Message
 {
   char author[100];
@@ -17,6 +16,7 @@ struct ThreadArgs
 {
   int client_socket;
   struct Message *forum;
+  pthread_t thread_id;
 };
 
 void *handle_client(void *args)
@@ -31,18 +31,17 @@ void *handle_client(void *args)
 
   while (1)
   {
-    // Leia a mensagem do cliente
-    if (read(client_socket, newMessage.text, sizeof(newMessage.text)) == -1)
+    ssize_t read_bytes = read(client_socket, newMessage.text, sizeof(newMessage.text));
+    if (read_bytes <= 0)
     {
-      perror("Erro ao ler a mensagem do cliente");
-      break;
+      printf("%s se desconectou ou ocorreu um erro.\n", newMessage.author);
+      break; // Encerre a thread em caso de erro ou desconexão
     }
 
-    // Leitura do autor da mensagem do cliente
     if (read(client_socket, newMessage.author, sizeof(newMessage.author)) == -1)
     {
       perror("Erro ao ler o autor da mensagem do cliente");
-      break;
+      break; // Encerre a thread em caso de erro
     }
 
     // Obter a data atual
@@ -68,6 +67,7 @@ void *handle_client(void *args)
 
   // Feche o socket do cliente
   close(client_socket);
+  pthread_cancel(thread_args->thread_id); // Encerre a própria thread
   return NULL;
 }
 
@@ -121,7 +121,13 @@ int main()
     thread_args.client_socket = client_socket;
     thread_args.forum = forum;
 
-    pthread_create(&threads[i], NULL, handle_client, &thread_args);
+    if (pthread_create(&threads[i], NULL, handle_client, &thread_args) != 0)
+    {
+      perror("Erro ao criar a thread");
+      exit(1);
+    }
+
+    thread_args.thread_id = threads[i];
   }
 
   for (int i = 0; i < 10; i++)

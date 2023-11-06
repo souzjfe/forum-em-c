@@ -4,7 +4,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-int main() {
+int main()
+{
     int client_socket;
     struct sockaddr_in server_address;
     char message[500];
@@ -12,7 +13,8 @@ int main() {
 
     // Crie o socket do cliente
     client_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (client_socket == -1) {
+    if (client_socket == -1)
+    {
         perror("Erro ao criar o socket do cliente");
         exit(1);
     }
@@ -22,7 +24,8 @@ int main() {
     server_address.sin_addr.s_addr = INADDR_ANY;
 
     // Conecte-se ao servidor
-    if (connect(client_socket, (struct sockaddr*)&server_address, sizeof(server_address)) == -1) {
+    if (connect(client_socket, (struct sockaddr *)&server_address, sizeof(server_address)) == -1)
+    {
         perror("Erro ao conectar ao servidor");
         exit(1);
     }
@@ -30,12 +33,14 @@ int main() {
     printf("Conectado ao servidor. Digite o seu nome: ");
     fgets(author, sizeof(author), stdin);
 
-    while (message[0] != 'e' || message[1] != 'x' || message[2] != 'i' || message[3] != 't') {
+    while (message[0] != 'e' || message[1] != 'x' || message[2] != 'i' || message[3] != 't')
+    {
         printf("Digite a sua mensagem (ou 'exit' para sair): ");
         fgets(message, sizeof(message), stdin);
 
         // Verifique se o cliente quer sair
-        if (strcmp(message, "exit\n") == 0) {
+        if (strcmp(message, "exit\n") == 0)
+        {
             break;
         }
 
