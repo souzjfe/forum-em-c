@@ -20,7 +20,7 @@ int main()
     }
 
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(9002); // Porta à qual o cliente vai se conectar
+    server_address.sin_port = htons(15368); // Porta à qual o cliente vai se conectar
     // server_address.sin_addr.s_addr = INADDR_ANY;
     server_address.sin_addr.s_addr = inet_addr("54.94.248.37");
 
