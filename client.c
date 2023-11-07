@@ -35,18 +35,12 @@ int main()
     printf("Conectado ao servidor. Digite o seu nome: ");
     fgets(author, sizeof(author), stdin);
 
-    while (message[0] != 'e' || message[1] != 'x' || message[2] != 'i' || message[3] != 't')
+    while (strcmp(message, "exit\n") != 0)
     {
         printf("Digite a sua mensagem (ou 'exit' para sair): ");
         fgets(message, sizeof(message), stdin);
 
-        // Verifique se o cliente quer sair
-        if (strcmp(message, "exit\n") == 0)
-        {
-            break;
-        }
 
-        // Envie a mensagem e o autor separadamente para o servidor
         write(client_socket, message, sizeof(message));
         write(client_socket, author, sizeof(author));
     }

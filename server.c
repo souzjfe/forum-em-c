@@ -51,19 +51,13 @@ void *handle_client(void *args)
     sprintf(newMessage.date, "%d-%02d-%02d %02d:%02d:%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
     // Armazene a nova mensagem na estrutura de dados
-    forum[0] = newMessage;
 
     printf("\nMensagens no fórum:\n");
-    for (int i = 0; i < 100; i++)
-    {
-      if (forum[i].text[0] == '\0')
-      {
-        break;
-      }
-      printf("Autor: %s\n", forum[i].author);
-      printf("Data: %s\n", forum[i].date);
-      printf("Mensagem: %s\n", forum[i].text);
-    }
+    
+    printf("Data: %s\n", newMessage.date);
+    newMessage.author[strlen(newMessage.author) - 1] = '\0'; 
+    printf("%s: %s\n\n",newMessage.author, newMessage.text);
+    
   }
 
   // Feche o socket do cliente
