@@ -34,7 +34,8 @@ void *handle_client(void *args)
     ssize_t read_bytes = read(client_socket, newMessage.text, sizeof(newMessage.text));
     if (read_bytes <= 0)
     {
-      printf("%s se desconectou ou ocorreu um erro.\n", newMessage.author);
+      newMessage.author[strlen(newMessage.author) - 1] = '\0'; // Remova o '\n' do final da string
+      printf("%s se desconectou.\n", newMessage.author);
       break; // Encerre a thread em caso de erro ou desconexão
     }
 
