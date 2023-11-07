@@ -79,7 +79,7 @@ int main()
   socklen_t client_address_length = sizeof(struct sockaddr_in);
 
   // Crie o socket do servidor
-  server_socket = socket(AF_INET, SOCK_STREAM, 0);
+  server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   if (server_socket == -1)
   {
     perror("Erro ao criar o socket do servidor");
